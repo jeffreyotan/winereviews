@@ -18,7 +18,7 @@ export class ListComponent implements OnInit {
 
   async populateList() {
     const results = await this.webSvc.getCountryList();
-    console.info('-> populateList: ', results);
+    // console.info('-> populateList: ', results);
     this.countryList = results as string[];
   }
 

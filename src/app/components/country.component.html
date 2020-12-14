@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col">
+        <span>Wine from country: <em>{{country}}</em></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <ul>
+            <li *ngFor="let w of wineList;"><a [routerLink]="['/wine',w._id]">{{w.title}}</a></li>
+        </ul>
+    </div>
+</div>

@@ -9,6 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 // import the mongodb driver
+const Mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 
 // connection string
@@ -111,6 +112,9 @@ app.get('/api/countries', (req, res, next) => {
 // GET /country/:country
 app.get('/api/country/:country', (req, res, next) => {
     const country = req.params['country'];
+    const offset = parseInt(req.query['offset']) || 0;
+    const limit = parseInt(req.query['limit']) || 30;
+    console.info(`=> in country route with Country: ${country}, Offset: ${offset}, Limit: ${limit}`);
 
     mongoClient.db('winemag').collection('wine')
         .find({ country: {
@@ -119,12 +123,28 @@ app.get('/api/country/:country', (req, res, next) => {
         } })
         .sort({ province: 1 })
         .project({ title:1, price:1 })
-        .limit(30)
+        .skip(offset)
+        .limit(limit)
         .toArray()
         .then(result => {
             res.status(200).contentType('application/json').json(result);
         }).catch(e => {
             console.error('=> Error querying MongoDB: ', e);
+            res.status(500).contentType('application/json').json({error: e});
+        });
+});
+
+app.get('/api/wine/:id', (req, res, next) => {
+    const _id = req.params['id'];
+    console.info('=> In /api/wine with id: ', _id.toString());
+
+    mongoClient.db('winemag').collection('wine')
+        .find({ _id: Mongo.ObjectId(_id.toString()) })
+        .toArray()
+        .then(result => {
+            res.status(200).contentType('application/json').json(result);
+        }).catch(e => {
+            console.error('=> Error getting wine from id: ', e);
             res.status(500).contentType('application/json').json({error: e});
         });
 });

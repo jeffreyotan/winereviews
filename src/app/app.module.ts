@@ -8,11 +8,13 @@ import { AppComponent } from './app.component';
 import { WebService } from './web.service';
 import { ListComponent } from './components/list.component';
 import { DetailsComponent } from './components/details.component';
+import { CountryComponent } from './components/country.component';
 
 const ROUTES: Routes = [
   { path: "", component: ListComponent },
   { path: "home", component: ListComponent },
-  { path: "/country/:country", component: DetailsComponent },
+  { path: "country/:country", component: CountryComponent },
+  { path: "wine/:id", component: DetailsComponent },
   { path: "**", redirectTo: '/', pathMatch: "full"}
 ];
 
@@ -20,7 +22,8 @@ const ROUTES: Routes = [
   declarations: [
     AppComponent,
     ListComponent,
-    DetailsComponent
+    DetailsComponent,
+    CountryComponent
   ],
   imports: [
     BrowserModule,
