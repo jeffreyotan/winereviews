@@ -9,7 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 // import the mongodb driver
-const Mongo = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 
 // connection string
@@ -139,7 +139,7 @@ app.get('/api/wine/:id', (req, res, next) => {
     console.info('=> In /api/wine with id: ', _id.toString());
 
     mongoClient.db('winemag').collection('wine')
-        .find({ _id: Mongo.ObjectId(_id.toString()) })
+        .find({ _id: ObjectId(_id.toString()) })
         .toArray()
         .then(result => {
             res.status(200).contentType('application/json').json(result);
@@ -148,6 +148,8 @@ app.get('/api/wine/:id', (req, res, next) => {
             res.status(500).contentType('application/json').json({error: e});
         });
 });
+
+app.use(express.static(__dirname + "/public"));
 
 // step 8: start the server
 startApp(app, pool);
