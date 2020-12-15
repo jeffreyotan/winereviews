@@ -60,6 +60,18 @@ const startApp = async (newApp, newPool) => {
     } catch (e) {
         console.error('=> Unable to establish connection to DB: ', e);
     }
+
+    // alternatively, we can use Promise.all
+    // Promise.all([
+    //     pool.getConnection().then(conn => {conn.ping();}),
+    //     mongoClient.connect()
+    // ]).then(() => {
+    //     app.listen(PORT, () => {
+    //         console.info(`Server started at port ${PORT} on ${new Date()}`);
+    //     });
+    // }).catch(e => {
+    //     console.error('-> Unable to establish connection to DB: ', e);
+    // });
 };
 
 // step 6: define the SQL Queries or cloud persistance storage
